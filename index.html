@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DREAMLAND</title>
+    <style>
+      body {
+        background-image: url("/Users/adarsh/Downloads/dreamland.png");
+        background-size: cover;
+        background-position: center;
+      }
+      h1 {
+        font-family: 'Horror Font', sans-serif;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+      }
+      p {
+        font-weight: bold;
+        font-size: 24px;
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+        margin-left: 20px;
+      }
+      label {
+        color: white;
+        text-shadow: 2px 2px 4px #000000;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@openai/api@0.6.0"></script>
+    <script>
+      const openai = new OpenAI('API_KEY');
+      async function generateImage() {
+        const description = document.getElementById("description").value;
+        const prompt = `Generate an image of ${description} using Dalle AI.`;
+        const completions = await openai.complete({
+          engine: 'davinci',
+          prompt,
+          maxTokens: 256,
+          n: 1,
+          stop: ['\n']
+        });
+        const image = completions.choices[0].text.trim();
+        const imageContainer = document.getElementById("image-container");
+        imageContainer.innerHTML = `<img src="${image}" alt="Dalle AI generated image" style="width:100%">`;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>DREAMLAND</h1>
+    <p style="margin-left: 40px;">Welcome to the world of your dreams...</p>
+    <div>
+      <label for="description">Enter a description:</label>
+      <input type="text" id="description" name="description">
+      <button onclick="generateImage()">Generate</button>
+    </div>
+    <div id="image-container"></div>
+  </body>
+</html>
